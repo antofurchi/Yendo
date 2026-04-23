@@ -416,7 +416,7 @@
 
     }
 
-    .cart-item, .delivery-item {
+    .cart-item, .delivery-item, .history-item {
 
       display: flex;
 
@@ -432,7 +432,7 @@
 
     }
 
-    .cart-item:last-child, .delivery-item:last-child {
+    .cart-item:last-child, .delivery-item:last-child, .history-item:last-child {
 
       border-bottom: none;
 
@@ -720,6 +720,14 @@
 
     }
 
+    .status-ok {
+
+      color: #27c2a0;
+
+      font-weight: bold;
+
+    }
+
     footer {
 
       text-align: center;
@@ -888,6 +896,18 @@
 
   </section>
 
+  <section class="section">
+
+    <div class="box">
+
+      <h3>Historial de pedidos</h3>
+
+      <div id="history-list">Todavía no hiciste pedidos.</div>
+
+    </div>
+
+  </section>
+
   <footer>
 
     Yendo · Delivery local en Sarandí Grande
@@ -938,6 +958,8 @@
 
     let usuario = JSON.parse(localStorage.getItem("yendo_usuario")) || null;
 
+    let historialPedidos = JSON.parse(localStorage.getItem("yendo_historial")) || [];
+
     let productosBase = [
 
       { nombre: "Carnicería El Novillo", precio: 220, icono: "🥩", descripcion: "Carne fresca, milanesas, chorizos y más." },
@@ -967,6 +989,12 @@
     function guardarProductosExtra() {
 
       localStorage.setItem("yendo_productos_extra", JSON.stringify(productosExtra));
+
+    }
+
+    function guardarHistorial() {
+
+      localStorage.setItem("yendo_historial", JSON.stringify(historialPedidos));
 
     }
 
@@ -1232,6 +1260,48 @@
 
     }
 
+    function renderizarHistorial() {
+
+      const historyList = document.getElementById("history-list");
+
+      if (historialPedidos.length === 0) {
+
+        historyList.innerHTML = "Todavía no hiciste pedidos.";
+
+        return;
+
+      }
+
+      historyList.innerHTML = "";
+
+      historialPedidos.slice().reverse().forEach((pedido) => {
+
+        const item = document.createElement("div");
+
+        item.className = "history-item";
+
+        item.innerHTML = `
+
+          <div>
+
+            <strong>Pedido #${pedido.id}</strong><br>
+
+            ${pedido.items.join(", ")}<br>
+
+            Total: $${pedido.total}
+
+          </div>
+
+          <div class="status-ok">${pedido.estado}</div>
+
+        `;
+
+        historyList.appendChild(item);
+
+      });
+
+    }
+
     function hacerPedido() {
 
       if (carrito.length === 0) {
@@ -1241,6 +1311,22 @@
         return;
 
       }
+
+      const itemsPedido = carrito.map(item => item.nombre);
+
+      const totalPedido = carrito.reduce((acc, item) => acc + item.precio, 0);
+
+      const nuevoPedido = {
+
+        id: Date.now(),
+
+        items: itemsPedido,
+
+        total: totalPedido,
+
+        estado: "Entregado"
+
+      };
 
       document.getElementById("order-message").textContent = "Pedido confirmado ✅";
 
@@ -1265,6 +1351,12 @@
         document.getElementById("delivery-status").textContent = "Pedido entregado";
 
         document.getElementById("delivery-time").textContent = "0 min";
+
+        historialPedidos.push(nuevoPedido);
+
+        guardarHistorial();
+
+        renderizarHistorial();
 
         carrito = [];
 
@@ -1293,6 +1385,8 @@
     renderizarProductos();
 
     renderizarCarrito();
+
+    renderizarHistorial();
 
   </script>
 
