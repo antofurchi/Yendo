@@ -394,14 +394,6 @@
 
     }
 
-    .box p {
-
-      color: #666;
-
-      margin-bottom: 8px;
-
-    }
-
     .cart-item, .delivery-item {
 
       display: flex;
@@ -522,6 +514,20 @@
 
     }
 
+    .welcome {
+
+      max-width: 1150px;
+
+      margin: 0 auto;
+
+      padding: 0 20px 20px;
+
+      color: #444;
+
+      font-weight: bold;
+
+    }
+
     footer {
 
       text-align: center;
@@ -604,6 +610,8 @@
 
   </section>
 
+  <div class="welcome" id="bienvenida"></div>
+
   <section class="form-box" id="login-box">
 
     <div class="form-card">
@@ -650,97 +658,7 @@
 
     <h2 class="section-title">Comercios destacados</h2>
 
-    <div class="cards" id="cards-container">
-
-      <div class="card">
-
-        <div class="card-image">🥩</div>
-
-        <div class="card-content">
-
-          <h3>Carnicería El Novillo</h3>
-
-          <p>Carne fresca, milanesas, chorizos y más.</p>
-
-          <div class="price-row">
-
-            <div class="price">$220</div>
-
-            <button class="add-btn" onclick="agregarAlCarrito('Carnicería El Novillo', 220)">Agregar</button>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="card">
-
-        <div class="card-image">💊</div>
-
-        <div class="card-content">
-
-          <h3>Farmacia Central</h3>
-
-          <p>Medicamentos, perfumería y artículos de cuidado.</p>
-
-          <div class="price-row">
-
-            <div class="price">$180</div>
-
-            <button class="add-btn" onclick="agregarAlCarrito('Farmacia Central', 180)">Agregar</button>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="card">
-
-        <div class="card-image">🍗</div>
-
-        <div class="card-content">
-
-          <h3>Pollería Don Tito</h3>
-
-          <p>Pollo fresco, milanesas y preparados.</p>
-
-          <div class="price-row">
-
-            <div class="price">$250</div>
-
-            <button class="add-btn" onclick="agregarAlCarrito('Pollería Don Tito', 250)">Agregar</button>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="card">
-
-        <div class="card-image">🛒</div>
-
-        <div class="card-content">
-
-          <h3>Almacén La Esquina</h3>
-
-          <p>Bebidas, galletitas, limpieza y artículos diarios.</p>
-
-          <div class="price-row">
-
-            <div class="price">$90</div>
-
-            <button class="add-btn" onclick="agregarAlCarrito('Almacén La Esquina', 90)">Agregar</button>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
+    <div class="cards" id="cards-container"></div>
 
   </section>
 
@@ -804,9 +722,41 @@
 
   <script>
 
-    let carrito = [];
+    let carrito = JSON.parse(localStorage.getItem("yendo_carrito")) || [];
 
-    let usuario = null;
+    let usuario = JSON.parse(localStorage.getItem("yendo_usuario")) || null;
+
+    let productosBase = [
+
+      { nombre: "Carnicería El Novillo", precio: 220, icono: "🥩", descripcion: "Carne fresca, milanesas, chorizos y más." },
+
+      { nombre: "Farmacia Central", precio: 180, icono: "💊", descripcion: "Medicamentos, perfumería y artículos de cuidado." },
+
+      { nombre: "Pollería Don Tito", precio: 250, icono: "🍗", descripcion: "Pollo fresco, milanesas y preparados." },
+
+      { nombre: "Almacén La Esquina", precio: 90, icono: "🛒", descripcion: "Bebidas, galletitas, limpieza y artículos diarios." }
+
+    ];
+
+    let productosExtra = JSON.parse(localStorage.getItem("yendo_productos_extra")) || [];
+
+    function guardarCarrito() {
+
+      localStorage.setItem("yendo_carrito", JSON.stringify(carrito));
+
+    }
+
+    function guardarUsuario() {
+
+      localStorage.setItem("yendo_usuario", JSON.stringify(usuario));
+
+    }
+
+    function guardarProductosExtra() {
+
+      localStorage.setItem("yendo_productos_extra", JSON.stringify(productosExtra));
+
+    }
 
     function mostrarLogin() {
 
@@ -840,11 +790,9 @@
 
       usuario = { nombre, tipo };
 
-      document.getElementById("usuario-actual").textContent =
+      guardarUsuario();
 
-        "Sesión iniciada como: " + nombre + " (" + tipo + ")";
-
-      document.getElementById("logout-btn").classList.remove("hidden");
+      actualizarUsuarioEnPantalla();
 
       if (tipo === "comercio") {
 
@@ -854,13 +802,41 @@
 
     }
 
+    function actualizarUsuarioEnPantalla() {
+
+      const bienvenida = document.getElementById("bienvenida");
+
+      const actual = document.getElementById("usuario-actual");
+
+      const logoutBtn = document.getElementById("logout-btn");
+
+      if (usuario) {
+
+        bienvenida.textContent = "Hola, " + usuario.nombre + " (" + usuario.tipo + ")";
+
+        actual.textContent = "Sesión iniciada como: " + usuario.nombre + " (" + usuario.tipo + ")";
+
+        logoutBtn.classList.remove("hidden");
+
+      } else {
+
+        bienvenida.textContent = "";
+
+        actual.textContent = "";
+
+        logoutBtn.classList.add("hidden");
+
+      }
+
+    }
+
     function cerrarSesion() {
 
       usuario = null;
 
-      document.getElementById("usuario-actual").textContent = "";
+      guardarUsuario();
 
-      document.getElementById("logout-btn").classList.add("hidden");
+      actualizarUsuarioEnPantalla();
 
       document.getElementById("login-box").style.display = "none";
 
@@ -873,6 +849,8 @@
     function agregarAlCarrito(nombre, precio) {
 
       carrito.push({ nombre, precio });
+
+      guardarCarrito();
 
       renderizarCarrito();
 
@@ -887,6 +865,8 @@
     function eliminarDelCarrito(index) {
 
       carrito.splice(index, 1);
+
+      guardarCarrito();
 
       renderizarCarrito();
 
@@ -972,35 +952,21 @@
 
       }
 
-      const contenedor = document.getElementById("cards-container");
+      productosExtra.push({
 
-      const card = document.createElement("div");
+        nombre,
 
-      card.className = "card";
+        precio: Number(precio),
 
-      card.innerHTML = `
+        icono,
 
-        <div class="card-image">${icono}</div>
+        descripcion: "Producto agregado por el comercio."
 
-        <div class="card-content">
+      });
 
-          <h3>${nombre}</h3>
+      guardarProductosExtra();
 
-          <p>Producto agregado por el comercio.</p>
-
-          <div class="price-row">
-
-            <div class="price">$${precio}</div>
-
-            <button class="add-btn" onclick="agregarAlCarrito('${nombre}', ${precio})">Agregar</button>
-
-          </div>
-
-        </div>
-
-      `;
-
-      contenedor.appendChild(card);
+      renderizarProductos();
 
       document.getElementById("nuevo-nombre").value = "";
 
@@ -1009,6 +975,54 @@
       document.getElementById("nuevo-icono").value = "";
 
     }
+
+    function renderizarProductos() {
+
+      const contenedor = document.getElementById("cards-container");
+
+      contenedor.innerHTML = "";
+
+      const todosLosProductos = [...productosBase, ...productosExtra];
+
+      todosLosProductos.forEach((producto) => {
+
+        const card = document.createElement("div");
+
+        card.className = "card";
+
+        card.innerHTML = `
+
+          <div class="card-image">${producto.icono}</div>
+
+          <div class="card-content">
+
+            <h3>${producto.nombre}</h3>
+
+            <p>${producto.descripcion}</p>
+
+            <div class="price-row">
+
+              <div class="price">$${producto.precio}</div>
+
+              <button class="add-btn" onclick="agregarAlCarrito('${producto.nombre}', ${producto.precio})">Agregar</button>
+
+            </div>
+
+          </div>
+
+        `;
+
+        contenedor.appendChild(card);
+
+      });
+
+    }
+
+    actualizarUsuarioEnPantalla();
+
+    renderizarProductos();
+
+    renderizarCarrito();
 
   </script>
 
