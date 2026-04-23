@@ -492,6 +492,12 @@
 
     }
 
+    .small-btn.purple {
+
+      background: #7e57c2;
+
+    }
+
     .cart-total {
 
       font-size: 22px;
@@ -1110,6 +1116,18 @@
 
     <div class="box">
 
+      <h3>Pedidos para repartidor</h3>
+
+      <div id="repartidor-pedidos">No hay pedidos disponibles.</div>
+
+    </div>
+
+  </section>
+
+  <section class="section">
+
+    <div class="box">
+
       <h3>Historial de pedidos</h3>
 
       <div id="history-list">Todavía no hiciste pedidos.</div>
@@ -1151,6 +1169,8 @@
         <option value="cliente">Cliente</option>
 
         <option value="comercio">Comercio</option>
+
+        <option value="repartidor">Repartidor</option>
 
       </select>
 
@@ -1578,6 +1598,64 @@
 
     }
 
+    function renderizarPedidosRepartidor() {
+
+      const contenedor = document.getElementById("repartidor-pedidos");
+
+      if (!contenedor) return;
+
+      const disponibles = pedidosActivos.filter(
+
+        pedido => pedido.estado === "Listo para entregar"
+
+      );
+
+      if (disponibles.length === 0) {
+
+        contenedor.innerHTML = "No hay pedidos disponibles.";
+
+        return;
+
+      }
+
+      contenedor.innerHTML = "";
+
+      disponibles.slice().reverse().forEach((pedido) => {
+
+        const indexReal = pedidosActivos.findIndex(p => p.id === pedido.id);
+
+        const div = document.createElement("div");
+
+        div.className = "history-item";
+
+        div.innerHTML = `
+
+          <div>
+
+            <strong>Pedido #${pedido.id}</strong><br>
+
+            ${pedido.items.join(", ")}<br>
+
+            Total: $${pedido.total}<br>
+
+            Estado: <span class="status-ok">${pedido.estado}</span>
+
+          </div>
+
+          <div>
+
+            <button class="small-btn purple" onclick="tomarPedido(${indexReal})">Tomar pedido</button>
+
+          </div>
+
+        `;
+
+        contenedor.appendChild(div);
+
+      });
+
+    }
+
     function aceptarPedido(index) {
 
       pedidosActivos[index].estado = "Aceptado";
@@ -1585,6 +1663,8 @@
       guardarPedidosActivos();
 
       renderizarPedidosComercio();
+
+      renderizarPedidosRepartidor();
 
     }
 
@@ -1596,6 +1676,8 @@
 
       renderizarPedidosComercio();
 
+      renderizarPedidosRepartidor();
+
     }
 
     function listoParaEntregar(index) {
@@ -1606,6 +1688,8 @@
 
       renderizarPedidosComercio();
 
+      renderizarPedidosRepartidor();
+
     }
 
     function rechazarPedido(index) {
@@ -1615,6 +1699,26 @@
       guardarPedidosActivos();
 
       renderizarPedidosComercio();
+
+      renderizarPedidosRepartidor();
+
+    }
+
+    function tomarPedido(index) {
+
+      pedidosActivos[index].estado = "Tomado por repartidor";
+
+      guardarPedidosActivos();
+
+      renderizarPedidosComercio();
+
+      renderizarPedidosRepartidor();
+
+      document.getElementById("delivery-rider").textContent = "Repartidor asignado";
+
+      document.getElementById("delivery-status").textContent = "Pedido tomado por repartidor";
+
+      document.getElementById("delivery-time").textContent = "15 min";
 
     }
 
@@ -1676,6 +1780,8 @@
 
       renderizarPedidosComercio();
 
+      renderizarPedidosRepartidor();
+
       document.getElementById("order-message").textContent = "Pedido confirmado ✅";
 
       document.getElementById("delivery-rider").textContent = "En camino";
@@ -1730,6 +1836,8 @@
 
         renderizarPedidosComercio();
 
+        renderizarPedidosRepartidor();
+
         carrito = [];
 
         guardarCarrito();
@@ -1761,6 +1869,8 @@
     renderizarHistorial();
 
     renderizarPedidosComercio();
+
+    renderizarPedidosRepartidor();
 
     moverRepartidor("inicio");
 
