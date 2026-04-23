@@ -1,73 +1,4 @@
-[5:40, 23/4/2026] Antonella Furchi: <!DOCTYPE html>
-
-<html lang="es">
-
-<head>
-
-  <meta charset="UTF-8" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Yendo</title>
-
-  <style>
-
-    * {
-
-      box-sizing: border-box;
-
-      margin: 0;
-
-      padding: 0;
-
-      font-family: Arial, sans-serif;
-
-    }
-
-    body {
-
-      background: #f6f7f9;
-
-      color: #222;
-
-      padding-bottom: 80px;
-
-    }
-
-    header {
-
-      background: white;
-
-      border-bottom: 1px solid #e5e5e5;
-
-      padding: 14px 22px;
-
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: center;
-
-      position: sticky;
-
-      top: 0;
-
-      z-index: 10;
-
-    }
-
-    .logo {
-
-      font-size: 26px;
-
-      font-weight: bold;
-
-      color: #27c2a0;
-
-    }
-
-    .top-b…
-[5:53, 23/4/2026] Antonella Furchi: <!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="es">
 
@@ -77,9 +8,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Yendo - Delivery local</title>
-
-<link rel="manifest" href="manifest.json">
+<title>Yendo App</title>
 
 <style>
 
@@ -87,77 +16,61 @@ body {
 
   font-family: Arial;
 
-  margin: 0;
-
   background: #f5f5f5;
-
-}
-
-header {
-
-  background: #27c2a0;
-
-  color: white;
-
-  padding: 15px;
 
   text-align: center;
 
-  font-size: 22px;
-
-  font-weight: bold;
-
 }
 
-.container {
+h1 {
 
-  padding: 20px;
-
-}
-
-.card {
-
-  background: white;
-
-  padding: 15px;
-
-  border-radius: 12px;
-
-  margin-bottom: 15px;
+  color: #00c853;
 
 }
 
 button {
 
-  background: #27c2a0;
+  padding: 12px;
 
-  color: white;
+  margin: 8px;
 
   border: none;
 
-  padding: 10px;
+  background: #00c853;
+
+  color: white;
 
   border-radius: 8px;
+
+  font-size: 16px;
 
   cursor: pointer;
 
 }
 
-.pay {
+button:hover {
 
-  background: #2196f3;
-
-  width: 100%;
-
-  margin-top: 10px;
+  background: #009624;
 
 }
 
-.total {
+#carrito {
 
-  font-size: 20px;
+  margin-top: 20px;
+
+  padding: 15px;
+
+  background: white;
+
+  border-radius: 10px;
+
+}
+
+#total {
 
   font-weight: bold;
+
+  margin-top: 10px;
 
 }
 
@@ -167,67 +80,29 @@ button {
 
 <body>
 
-<header>Yendo 🚴</header>
+<h1>Yendo 🛵</h1>
 
-<div class="container">
+<h3>Elegí un comercio</h3>
 
-  <h2>Comercios</h2>
+<button onclick="agregar('Carnicería', 300)">Carnicería</button>
 
-  <div class="card">
+<button onclick="agregar('Farmacia', 200)">Farmacia</button>
 
-    🥩 Carnicería - $200
+<button onclick="agregar('Pollería', 250)">Pollería</button>
 
-    <br><br>
+<button onclick="agregar('Almacén', 150)">Almacén</button>
 
-    <button onclick="agregar('Carnicería',200)">Agregar</button>
+<div id="carrito">
 
-  </div>
+  <h3>Carrito</h3>
 
-  <div class="card">
+  <div id="lista"></div>
 
-    🍗 Pollería - $250
-
-    <br><br>
-
-    <button onclick="agregar('Pollería',250)">Agregar</button>
-
-  </div>
-
-  <div class="card">
-
-    💊 Farmacia - $180
-
-    <br><br>
-
-    <button onclick="agregar('Farmacia',180)">Agregar</button>
-
-  </div>
-
-  <h2>Carrito</h2>
-
-  <div id="carrito"></div>
-
-  <div class="total">
-
-    Total: $<span id="total">0</span>
-
-  </div>
-
-  <!-- BOTÓN DE PAGO REAL -->
-
-  <a href="https://mpago.la/tu_link" target="_blank">
-
-    <button class="pay">Pagar con MercadoPago</button>
-
-  </a>
-
-  <br><br>
-
-  <button onclick="pedido()">Confirmar pedido</button>
-
-  <p id="mensaje"></p>
+  <div id="total"></div>
 
 </div>
+
+<button onclick="pagar()">Pagar 💳</button>
 
 <script>
 
@@ -235,7 +110,7 @@ let carrito = [];
 
 function agregar(nombre, precio) {
 
-  carrito.push({nombre, precio});
+  carrito.push({ nombre, precio });
 
   render();
 
@@ -255,23 +130,23 @@ function render() {
 
   });
 
-  document.getElementById("carrito").innerHTML = html;
+  document.getElementById("lista").innerHTML = html;
 
-  document.getElementById("total").innerText = total;
+  document.getElementById("total").innerHTML = "Total: $" + total;
 
 }
 
-function pedido() {
+function pagar() {
 
-  if(carrito.length === 0){
+  if (carrito.length === 0) {
 
-    alert("Agregá productos");
+    alert("El carrito está vacío");
 
     return;
 
   }
 
-  document.getElementById("mensaje").innerText = "Pedido enviado 🚀";
+  alert("Pedido realizado ✅");
 
   carrito = [];
 
