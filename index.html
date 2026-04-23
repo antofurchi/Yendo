@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+[16:24, 23/4/2026] Antonella Furchi: <!DOCTYPE html>
 
 <html lang="es">
 
@@ -84,25 +84,174 @@ button:hover {
 
 <h3>Elegí un comercio</h3>
 
-<button onclick="agregar('Carnicería', 300)">Carnicería</button>
+<button onclick="agregar('Carnicería', 300)"…
+[16:31, 23/4/2026] Antonella Furchi: <!DOCTYPE html>
 
-<button onclick="agregar('Farmacia', 200)">Farmacia</button>
+<html lang="es">
 
-<button onclick="agregar('Pollería', 250)">Pollería</button>
+<head>
 
-<button onclick="agregar('Almacén', 150)">Almacén</button>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Yendo App</title>
+
+<style>
+
+body {
+
+  font-family: Arial;
+
+  background: #f0f2f5;
+
+  margin: 0;
+
+  text-align: center;
+
+}
+
+h1 {
+
+  background: #00c853;
+
+  color: white;
+
+  padding: 15px;
+
+  margin: 0;
+
+}
+
+.container {
+
+  padding: 20px;
+
+}
+
+.subtitulo {
+
+  margin-top: 15px;
+
+  color: #555;
+
+}
+
+.botones {
+
+  margin-top: 15px;
+
+}
+
+button {
+
+  padding: 12px 18px;
+
+  margin: 8px;
+
+  border: none;
+
+  background: #00c853;
+
+  color: white;
+
+  border-radius: 20px;
+
+  font-size: 15px;
+
+  cursor: pointer;
+
+  box-shadow: 0px 3px 8px rgba(0,0,0,0.2);
+
+}
+
+button:hover {
+
+  background: #009624;
+
+}
+
+#carrito {
+
+  margin-top: 25px;
+
+  padding: 15px;
+
+  background: white;
+
+  border-radius: 12px;
+
+  box-shadow: 0px 3px 10px rgba(0,0,0,0.1);
+
+}
+
+#lista {
+
+  margin-top: 10px;
+
+}
+
+#total {
+
+  font-weight: bold;
+
+  margin-top: 10px;
+
+  font-size: 18px;
+
+}
+
+.pagar {
+
+  margin-top: 20px;
+
+  background: #ff9800;
+
+}
+
+.pagar:hover {
+
+  background: #e68900;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Yendo 🛵</h1>
+
+<div class="container">
+
+<div class="subtitulo">Elegí un comercio</div>
+
+<div class="botones">
+
+  <button onclick="agregar('Carnicería', 300)">Carnicería</button>
+
+  <button onclick="agregar('Farmacia', 200)">Farmacia</button>
+
+  <button onclick="agregar('Pollería', 250)">Pollería</button>
+
+  <button onclick="agregar('Almacén', 150)">Almacén</button>
+
+</div>
 
 <div id="carrito">
 
   <h3>Carrito</h3>
 
-  <div id="lista"></div>
+  <div id="lista">Vacío</div>
 
   <div id="total"></div>
 
 </div>
 
-<button onclick="pagar()">Pagar 💳</button>
+<button class="pagar" onclick="pagar()">Pagar 💳</button>
+
+</div>
 
 <script>
 
@@ -121,6 +270,16 @@ function render() {
   let html = "";
 
   let total = 0;
+
+  if (carrito.length === 0) {
+
+    document.getElementById("lista").innerHTML = "Vacío";
+
+    document.getElementById("total").innerHTML = "";
+
+    return;
+
+  }
 
   carrito.forEach(p => {
 
@@ -146,7 +305,7 @@ function pagar() {
 
   }
 
-  alert("Pedido realizado ✅");
+  alert("Pedido realizado con éxito ✅");
 
   carrito = [];
 
