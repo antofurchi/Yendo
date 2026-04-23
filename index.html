@@ -1,42 +1,254 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="es">
 
 <head>
 
-  <title>Yendo</title>
+  <meta charset="UTF-8" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Yendo</title>
 
   <style>
 
-    body {
+    * {
+
+      box-sizing: border-box;
 
       margin: 0;
 
-      font-family: Arial;
+      padding: 0;
 
-      background: #f5f5f5;
+      font-family: Arial, sans-serif;
+
+    }
+
+    body {
+
+      background: #f6f7f9;
+
+      color: #222;
 
     }
 
     header {
 
-      background: #ff3d3d;
+      background: white;
 
-      color: white;
+      border-bottom: 1px solid #e5e5e5;
 
-      padding: 15px;
+      padding: 14px 22px;
 
-      font-size: 22px;
+      display: flex;
 
-      font-weight: bold;
+      justify-content: space-between;
+
+      align-items: center;
+
+      position: sticky;
+
+      top: 0;
 
     }
 
-    .container {
+    .logo {
 
-      padding: 15px;
+      font-size: 26px;
+
+      font-weight: bold;
+
+      color: #27c2a0;
+
+    }
+
+    .top-buttons {
+
+      display: flex;
+
+      gap: 10px;
+
+    }
+
+    .top-buttons button {
+
+      border: none;
+
+      border-radius: 10px;
+
+      padding: 10px 14px;
+
+      font-size: 14px;
+
+      cursor: pointer;
+
+    }
+
+    .btn-light {
+
+      background: #eefaf7;
+
+      color: #27c2a0;
+
+      border: 1px solid #ccefe7;
+
+    }
+
+    .btn-main {
+
+      background: #27c2a0;
+
+      color: white;
+
+    }
+
+    .hero {
+
+      text-align: center;
+
+      padding: 60px 20px 30px;
+
+      background: linear-gradient(to bottom, #f8fffd, #f6f7f9);
+
+    }
+
+    .tag {
+
+      display: inline-block;
+
+      background: #eefaf7;
+
+      color: #27c2a0;
+
+      padding: 8px 14px;
+
+      border-radius: 999px;
+
+      font-size: 13px;
+
+      margin-bottom: 18px;
+
+    }
+
+    .hero h1 {
+
+      font-size: 48px;
+
+      line-height: 1.1;
+
+      margin-bottom: 16px;
+
+    }
+
+    .hero h1 span {
+
+      color: #27c2a0;
+
+    }
+
+    .hero p {
+
+      color: #666;
+
+      font-size: 18px;
+
+      margin-bottom: 28px;
+
+    }
+
+    .search-box {
+
+      max-width: 620px;
+
+      margin: 0 auto 25px;
+
+      background: white;
+
+      border-radius: 14px;
+
+      padding: 12px 16px;
+
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+
+      border: 1px solid #eee;
+
+    }
+
+    .search-box input {
+
+      width: 100%;
+
+      border: none;
+
+      outline: none;
+
+      font-size: 16px;
+
+    }
+
+    .categories {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      justify-content: center;
+
+      gap: 10px;
+
+      margin-bottom: 20px;
+
+    }
+
+    .categories button {
+
+      padding: 10px 16px;
+
+      border-radius: 999px;
+
+      border: 1px solid #ddd;
+
+      background: white;
+
+      cursor: pointer;
+
+    }
+
+    .categories .active {
+
+      background: #222;
+
+      color: white;
+
+      border-color: #222;
+
+    }
+
+    .section {
+
+      max-width: 1150px;
+
+      margin: 0 auto;
+
+      padding: 20px;
+
+    }
+
+    .section-title {
+
+      font-size: 28px;
+
+      margin-bottom: 18px;
+
+    }
+
+    .cards {
+
+      display: grid;
+
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+
+      gap: 18px;
 
     }
 
@@ -44,33 +256,101 @@
 
       background: white;
 
-      border-radius: 10px;
+      border-radius: 18px;
 
-      padding: 15px;
+      overflow: hidden;
 
-      margin-bottom: 10px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.06);
 
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border: 1px solid #eee;
 
     }
 
-    button {
+    .card-image {
 
-      background: #ff3d3d;
+      height: 140px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-size: 52px;
+
+      background: #f2fbf8;
+
+    }
+
+    .card-content {
+
+      padding: 16px;
+
+    }
+
+    .card h3 {
+
+      font-size: 20px;
+
+      margin-bottom: 8px;
+
+    }
+
+    .card p {
+
+      color: #666;
+
+      font-size: 14px;
+
+      margin-bottom: 12px;
+
+    }
+
+    .price-row {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+    }
+
+    .price {
+
+      font-size: 18px;
+
+      font-weight: bold;
+
+      color: #27c2a0;
+
+    }
+
+    .add-btn {
+
+      background: #27c2a0;
 
       color: white;
 
       border: none;
 
-      padding: 10px;
+      border-radius: 10px;
 
-      border-radius: 8px;
+      padding: 10px 14px;
 
-      width: 100%;
+      cursor: pointer;
 
-      margin-top: 10px;
+    }
 
-      font-size: 16px;
+    footer {
+
+      text-align: center;
+
+      padding: 30px 20px;
+
+      color: #777;
+
+      font-size: 14px;
 
     }
 
@@ -80,45 +360,153 @@
 
 <body>
 
-<header>
+  <header>
 
-  Yendo 🚀
+    <div class="logo">Yendo</div>
 
-</header>
+    <div class="top-buttons">
 
-<div class="container">
+      <button class="btn-light">Soy comercio</button>
 
-  <div class="card">
+      <button class="btn-main">Carrito</button>
 
-    <h3>🍔 Hamburguesa</h3>
+    </div>
 
-    <p>$250</p>
+  </header>
 
-    <button>Agregar</button>
+  <section class="hero">
 
-  </div>
+    <div class="tag">🚴 Delivery en tu barrio</div>
 
-  <div class="card">
+    <h1>Pedí en los comercios <br><span>de tu barrio</span></h1>
 
-    <h3>🍕 Pizza</h3>
+    <p>Carnicerías, farmacias, pollerías, almacenes y más en Sarandí Grande.</p>
 
-    <p>$300</p>
+    <div class="search-box">
 
-    <button>Agregar</button>
+      <input type="text" placeholder="Buscar comercio o producto..." />
 
-  </div>
+    </div>
 
-  <div class="card">
+    <div class="categories">
 
-    <h3>🥤 Refresco</h3>
+      <button class="active">Todos</button>
 
-    <p>$120</p>
+      <button>Carnicería</button>
 
-    <button>Agregar</button>
+      <button>Farmacia</button>
 
-  </div>
+      <button>Pollería</button>
 
-</div>
+      <button>Almacén</button>
+
+    </div>
+
+  </section>
+
+  <section class="section">
+
+    <h2 class="section-title">Comercios destacados</h2>
+
+    <div class="cards">
+
+      <div class="card">
+
+        <div class="card-image">🥩</div>
+
+        <div class="card-content">
+
+          <h3>Carnicería El Novillo</h3>
+
+          <p>Carne fresca, milanesas, chorizos y más.</p>
+
+          <div class="price-row">
+
+            <div class="price">Desde $220</div>
+
+            <button class="add-btn">Ver más</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="card">
+
+        <div class="card-image">💊</div>
+
+        <div class="card-content">
+
+          <h3>Farmacia Central</h3>
+
+          <p>Medicamentos, perfumería y artículos de cuidado.</p>
+
+          <div class="price-row">
+
+            <div class="price">Desde $180</div>
+
+            <button class="add-btn">Ver más</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="card">
+
+        <div class="card-image">🍗</div>
+
+        <div class="card-content">
+
+          <h3>Pollería Don Tito</h3>
+
+          <p>Pollo fresco, milanesas y preparados.</p>
+
+          <div class="price-row">
+
+            <div class="price">Desde $250</div>
+
+            <button class="add-btn">Ver más</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="card">
+
+        <div class="card-image">🛒</div>
+
+        <div class="card-content">
+
+          <h3>Almacén La Esquina</h3>
+
+          <p>Bebidas, galletitas, limpieza y artículos diarios.</p>
+
+          <div class="price-row">
+
+            <div class="price">Desde $90</div>
+
+            <button class="add-btn">Ver más</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <footer>
+
+    Yendo · Delivery local en Sarandí Grande
+
+  </footer>
 
 </body>
 
