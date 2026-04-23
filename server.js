@@ -12,7 +12,7 @@ app.use(express.json());
 
 mercadopago.configure({
 
-  access_token: "PEGÁ_TU_TOKEN_ACÁ"
+  access_token: "PEGÁ_ACÁ_TU_ACCESS_TOKEN"
 
 });
 
@@ -56,7 +56,7 @@ app.post("/crear-pago", async (req, res) => {
 
     console.log(error);
 
-    res.status(500).send("Error");
+    res.status(500).send("Error al crear pago");
 
   }
 
@@ -66,4 +66,4 @@ app.listen(3000, () => {
 
   console.log("Servidor funcionando en puerto 3000");
 
-});
+})
