@@ -1025,6 +1025,69 @@
     renderizarCarrito();
 
   </script>
+  <div class="bottom-nav">
+
+  <button onclick="scrollToTop()">🏠 Inicio</button>
+
+  <button onclick="mostrarCarrito()">🛒 Carrito</button>
+
+  <button onclick="mostrarLogin()">👤 Perfil</button>
+
+</div>
+
+<style>
+
+.bottom-nav {
+
+  position: fixed;
+
+  bottom: 0;
+
+  left: 0;
+
+  width: 100%;
+
+  background: white;
+
+  border-top: 1px solid #ddd;
+
+  display: flex;
+
+  justify-content: space-around;
+
+  padding: 10px 0;
+
+  z-index: 100;
+
+}
+
+.bottom-nav button {
+
+  background: none;
+
+  border: none;
+
+  font-size: 16px;
+
+}
+
+</style>
+
+<script>
+
+function scrollToTop() {
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+}
+
+function mostrarCarrito() {
+
+  document.querySelector(".box").scrollIntoView({ behavior: "smooth" });
+
+}
+
+</script>
 
 </body>
 
