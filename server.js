@@ -62,8 +62,8 @@ app.post("/crear-pago", async (req, res) => {
 
 });
 
-app.listen(3000, () => {
+app.listen (3000, () => {
 
   console.log("Servidor funcionando en puerto 3000");
 
-})
+});
