@@ -1,239 +1,60 @@
-[16:31, 23/4/2026] Antonella Furchi: <!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="es">
 
 <head>
 
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Yendo App</title>
-
-<style>
-
-body {
-
-  font-family: Arial;
-
-  background: #f0f2f5;
-
-  margin: 0;
-
-  text-align: center;
-
-}
-
-h1 {
-
-  background: #00c853;
-
-  color: white;
-
-  padding: 15px;
-
-  margin: 0;
-
-}
-
-.container {
-
-  padding: 20px;
-
-}
-
-.subtitulo {
-
-  margin-top: 15px;
-
-  color: #555;
-
-}
-
-.botones {
-
-  margin-top: 15px;
-
-}
-
-button {
-
-  padding: 12px 18px;
-
-  margin: 8px;
-
-  border: none;
-
-  background: #00c853;
-
-  color: white;
-
-  border-radius: 20px;
-
-  font-size: 15px;
-
-  cursor: pointer;
-
-  box-shadow: 0px 3px 8px rgba(0,0,0,0.2);
-
-}
-
-button:hover {
-
-  background: #009624;
-
-}
-
-#carrito {
-
-  margin-top: 25px;…
-[16:35, 23/4/2026] Antonella Furchi: <!DOCTYPE html>
-
-<html lang="es">
-
-<head>
-
-  <meta charset="UTF-8" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Yendo - Pago real</title>
+  <title>Yendo</title>
 
   <style>
 
     body {
 
-      font-family: Arial, sans-serif;
-
-      background: #f4f6f8;
-
-      margin: 0;
+      font-family: Arial;
 
       text-align: center;
 
-    }
-
-    header {
-
-      background: #00c853;
-
-      color: white;
-
-      padding: 18px;
-
-      font-size: 28px;
-
-      font-weight: bold;
+      background: #f4f4f4;
 
     }
 
-    .container {
+    h1 {
 
-      max-width: 700px;
-
-      margin: 30px auto;
-
-      padding: 20px;
-
-    }
-
-    .subtitle {
-
-      color: #555;
-
-      margin-bottom: 20px;
-
-      font-size: 20px;
-
-    }
-
-    .buttons {
-
-      margin-bottom: 25px;
+      color: green;
 
     }
 
     button {
 
-      padding: 12px 18px;
+      margin: 5px;
 
-      margin: 8px;
+      padding: 10px;
 
       border: none;
 
-      background: #00c853;
+      background: green;
 
       color: white;
 
-      border-radius: 20px;
-
-      font-size: 15px;
+      border-radius: 5px;
 
       cursor: pointer;
 
-      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-
     }
 
-    button:hover {
-
-      background: #009624;
-
-    }
-
-    .card {
+    .box {
 
       background: white;
 
-      border-radius: 14px;
+      padding: 15px;
 
-      padding: 20px;
+      margin: 20px auto;
 
-      box-shadow: 0 3px 12px rgba(0,0,0,0.10);
+      width: 300px;
 
-    }
-
-    #lista {
-
-      margin-top: 10px;
-
-      color: #333;
-
-      line-height: 1.8;
-
-    }
-
-    #total {
-
-      margin-top: 16px;
-
-      font-size: 20px;
-
-      font-weight: bold;
-
-      color: #00c853;
-
-    }
-
-    #pagarBtn {
-
-      background: #009ee3;
-
-    }
-
-    #pagarBtn:hover {
-
-      background: #0077ad;
-
-    }
-
-    #estado {
-
-      margin-top: 18px;
-
-      font-weight: bold;
-
-      color: #444;
+      border-radius: 10px;
 
     }
 
@@ -243,139 +64,117 @@ button:hover {
 
 <body>
 
-  <header>Yendo 🛵</header>
+<h1>Yendo 🛵</h1>
 
-  <div class="container">
+<p>Elegí un comercio</p>
 
-    <div class="subtitle">Elegí productos y pagá con Mercado Pago</div>
+<button onclick="cargar('carniceria')">Carnicería</button>
 
-    <div class="buttons">
+<button onclick="cargar('farmacia')">Farmacia</button>
 
-      <button onclick="agregar('Carnicería', 300)">Carnicería $300</button>
+<button onclick="cargar('almacen')">Almacén</button>
 
-      <button onclick="agregar('Farmacia', 200)">Farmacia $200</button>
+<div class="box">
 
-      <button onclick="agregar('Pollería', 250)">Pollería $250</button>
+  <h3>Productos</h3>
 
-      <button onclick="agregar('Almacén', 150)">Almacén $150</button>
+  <div id="productos"></div>
 
-    </div>
+</div>
 
-    <div class="card">
+<div class="box">
 
-      <h3>Carrito</h3>
+  <h3>Carrito</h3>
 
-      <div id="lista">Vacío</div>
+  <div id="carrito">Vacío</div>
 
-      <div id="total"></div>
+  <p id="total"></p>
 
-      <button id="pagarBtn" onclick="pagar()">Pagar con Mercado Pago</button>
+  <button onclick="pagar()">Pagar</button>
 
-      <div id="estado"></div>
+</div>
 
-    </div>
+<script>
 
-  </div>
+let carrito = [];
 
-  <script>
+let productos = {
 
-    let carrito = [];
+  carniceria: [
 
-    function agregar(nombre, precio) {
+    { nombre: "Carne", precio: 200 },
 
-      carrito.push({ nombre, precio });
+    { nombre: "Pollo", precio: 150 }
 
-      render();
+  ],
 
-    }
+  farmacia: [
 
-    function render() {
+    { nombre: "Ibuprofeno", precio: 100 },
 
-      const lista = document.getElementById("lista");
+    { nombre: "Alcohol", precio: 80 }
 
-      const totalEl = document.getElementById("total");
+  ],
 
-      if (carrito.length === 0) {
+  almacen: [
 
-        lista.innerHTML = "Vacío";
+    { nombre: "Pan", precio: 50 },
 
-        totalEl.innerHTML = "";
+    { nombre: "Leche", precio: 60 }
 
-        return;
+  ]
 
-      }
+};
 
-      let html = "";
+function cargar(tipo) {
 
-      let total = 0;
+  let html = "";
 
-      carrito.forEach((p) => {
+  productos[tipo].forEach(p => {
 
-        html += ${p.nombre} - $${p.precio}<br>;
+    html += <button onclick="agregar('${p.nombre}', ${p.precio})">${p.nombre} - $${p.precio}</button>;
 
-        total += p.precio;
+  });
 
-      });
+  document.getElementById("productos").innerHTML = html;
 
-      lista.innerHTML = html;
+}
 
-      totalEl.innerHTML = Total: $${total};
+function agregar(nombre, precio) {
 
-    }
+  carrito.push({ nombre, precio });
 
-    async function pagar() {
+  render();
 
-      const estado = document.getElementById("estado");
+}
 
-      if (carrito.length === 0) {
+function render() {
 
-        alert("El carrito está vacío");
+  let html = "";
 
-        return;
+  let total = 0;
 
-      }
+  carrito.forEach(p => {
 
-      estado.textContent = "Creando pago...";
+    html += p.nombre + " - $" + p.precio + "<br>";
 
-      try {
+    total += p.precio;
 
-        const respuesta = await fetch("/crear-preferencia", {
+  });
 
-          method: "POST",
+  document.getElementById("carrito").innerHTML = html;
 
-          headers: {
+  document.getElementById("total").innerText = "Total: $" + total;
 
-            "Content-Type": "application/json"
+}
 
-          },
+function pagar() {
 
-          body: JSON.stringify({ items: carrito })
+  alert("Pago simulado");
 
-        });
+}
 
-        const data = await respuesta.json();
-
-        if (!respuesta.ok) {
-
-          throw new Error(data.error || "No se pudo crear el pago");
-
-        }
-
-        estado.textContent = "Redirigiendo a Mercado Pago...";
-
-        window.location.href = data.init_point;
-
-      } catch (error) {
-
-        estado.textContent = "Error: " + error.message;
-
-      }
-
-    }
-
-    render();
-
-  </script>
+</script>
 
 </body>
 
