@@ -728,6 +728,140 @@
 
     }
 
+    .map-box {
+
+      position: relative;
+
+      height: 260px;
+
+      border-radius: 18px;
+
+      overflow: hidden;
+
+      background:
+
+        linear-gradient(90deg, rgba(255,255,255,0.7) 0 0),
+
+        repeating-linear-gradient(
+
+          0deg,
+
+          #e9ecef,
+
+          #e9ecef 38px,
+
+          #f8f9fa 38px,
+
+          #f8f9fa 40px
+
+        ),
+
+        repeating-linear-gradient(
+
+          90deg,
+
+          #e9ecef,
+
+          #e9ecef 38px,
+
+          #f8f9fa 38px,
+
+          #f8f9fa 40px
+
+        );
+
+      border: 1px solid #e5e5e5;
+
+    }
+
+    .map-label {
+
+      position: absolute;
+
+      background: white;
+
+      padding: 6px 10px;
+
+      border-radius: 999px;
+
+      font-size: 12px;
+
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+
+    }
+
+    .store-point {
+
+      position: absolute;
+
+      left: 22%;
+
+      top: 28%;
+
+      font-size: 26px;
+
+    }
+
+    .home-point {
+
+      position: absolute;
+
+      right: 18%;
+
+      bottom: 22%;
+
+      font-size: 26px;
+
+    }
+
+    .route-line {
+
+      position: absolute;
+
+      left: 28%;
+
+      top: 38%;
+
+      width: 42%;
+
+      height: 6px;
+
+      background: repeating-linear-gradient(
+
+        90deg,
+
+        #27c2a0,
+
+        #27c2a0 12px,
+
+        #b8efe3 12px,
+
+        #b8efe3 20px
+
+      );
+
+      border-radius: 999px;
+
+      transform: rotate(24deg);
+
+      transform-origin: left center;
+
+    }
+
+    .rider {
+
+      position: absolute;
+
+      left: 40%;
+
+      top: 47%;
+
+      font-size: 26px;
+
+      transition: all 1s ease;
+
+    }
+
     footer {
 
       text-align: center;
@@ -889,6 +1023,32 @@
         <span>Tiempo estimado</span>
 
         <strong id="delivery-time">-- min</strong>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="section">
+
+    <div class="box">
+
+      <h3>Mapa del repartidor</h3>
+
+      <div class="map-box">
+
+        <div class="map-label" style="left: 14%; top: 12%;">Comercio</div>
+
+        <div class="map-label" style="right: 12%; bottom: 10%;">Tu casa</div>
+
+        <div class="store-point">🏪</div>
+
+        <div class="home-point">🏠</div>
+
+        <div class="route-line"></div>
+
+        <div class="rider" id="rider-icon">🛵</div>
 
       </div>
 
@@ -1302,6 +1462,32 @@
 
     }
 
+    function moverRepartidor(posicion) {
+
+      const rider = document.getElementById("rider-icon");
+
+      if (posicion === "inicio") {
+
+        rider.style.left = "32%";
+
+        rider.style.top = "40%";
+
+      } else if (posicion === "medio") {
+
+        rider.style.left = "50%";
+
+        rider.style.top = "50%";
+
+      } else if (posicion === "fin") {
+
+        rider.style.left = "68%";
+
+        rider.style.top = "62%";
+
+      }
+
+    }
+
     function hacerPedido() {
 
       if (carrito.length === 0) {
@@ -1336,11 +1522,15 @@
 
       document.getElementById("delivery-time").textContent = "20 min";
 
+      moverRepartidor("inicio");
+
       setTimeout(() => {
 
         document.getElementById("delivery-status").textContent = "Llegando";
 
         document.getElementById("delivery-time").textContent = "10 min";
+
+        moverRepartidor("medio");
 
       }, 4000);
 
@@ -1351,6 +1541,8 @@
         document.getElementById("delivery-status").textContent = "Pedido entregado";
 
         document.getElementById("delivery-time").textContent = "0 min";
+
+        moverRepartidor("fin");
 
         historialPedidos.push(nuevoPedido);
 
@@ -1387,6 +1579,8 @@
     renderizarCarrito();
 
     renderizarHistorial();
+
+    moverRepartidor("inicio");
 
   </script>
 
