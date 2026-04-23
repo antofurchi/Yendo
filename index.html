@@ -454,6 +454,38 @@
 
     }
 
+    .small-btn {
+
+      background: #27c2a0;
+
+      color: white;
+
+      border: none;
+
+      border-radius: 8px;
+
+      padding: 8px 10px;
+
+      cursor: pointer;
+
+      margin-left: 6px;
+
+      margin-top: 6px;
+
+    }
+
+    .small-btn.red {
+
+      background: #ff5a5a;
+
+    }
+
+    .small-btn.orange {
+
+      background: #ff9800;
+
+    }
+
     .cart-total {
 
       font-size: 22px;
@@ -1060,6 +1092,18 @@
 
     <div class="box">
 
+      <h3>Pedidos del comercio</h3>
+
+      <div id="comercio-pedidos">No hay pedidos todavía.</div>
+
+    </div>
+
+  </section>
+
+  <section class="section">
+
+    <div class="box">
+
       <h3>Historial de pedidos</h3>
 
       <div id="history-list">Todavía no hiciste pedidos.</div>
@@ -1120,6 +1164,8 @@
 
     let historialPedidos = JSON.parse(localStorage.getItem("yendo_historial")) || [];
 
+    let pedidosActivos = JSON.parse(localStorage.getItem("yendo_pedidos_activos")) || [];
+
     let productosBase = [
 
       { nombre: "Carnicería El Novillo", precio: 220, icono: "🥩", descripcion: "Carne fresca, milanesas, chorizos y más." },
@@ -1155,6 +1201,12 @@
     function guardarHistorial() {
 
       localStorage.setItem("yendo_historial", JSON.stringify(historialPedidos));
+
+    }
+
+    function guardarPedidosActivos() {
+
+      localStorage.setItem("yendo_pedidos_activos", JSON.stringify(pedidosActivos));
 
     }
 
@@ -1462,6 +1514,92 @@
 
     }
 
+    function renderizarPedidosComercio() {
+
+      const contenedor = document.getElementById("comercio-pedidos");
+
+      if (!contenedor) return;
+
+      if (pedidosActivos.length === 0) {
+
+        contenedor.innerHTML = "No hay pedidos todavía.";
+
+        return;
+
+      }
+
+      contenedor.innerHTML = "";
+
+      pedidosActivos.slice().reverse().forEach((pedido) => {
+
+        const indexReal = pedidosActivos.findIndex(p => p.id === pedido.id);
+
+        const div = document.createElement("div");
+
+        div.className = "history-item";
+
+        div.innerHTML = `
+
+          <div>
+
+            <strong>Pedido #${pedido.id}</strong><br>
+
+            ${pedido.items.join(", ")}<br>
+
+            Total: $${pedido.total}<br>
+
+            Estado: <span class="status-ok">${pedido.estado || "Pendiente"}</span>
+
+          </div>
+
+          <div>
+
+            <button class="small-btn" onclick="aceptarPedido(${indexReal})">Aceptar</button>
+
+            <button class="small-btn orange" onclick="prepararPedido(${indexReal})">Preparando</button>
+
+            <button class="small-btn red" onclick="rechazarPedido(${indexReal})">Rechazar</button>
+
+          </div>
+
+        `;
+
+        contenedor.appendChild(div);
+
+      });
+
+    }
+
+    function aceptarPedido(index) {
+
+      pedidosActivos[index].estado = "Aceptado";
+
+      guardarPedidosActivos();
+
+      renderizarPedidosComercio();
+
+    }
+
+    function prepararPedido(index) {
+
+      pedidosActivos[index].estado = "Preparando";
+
+      guardarPedidosActivos();
+
+      renderizarPedidosComercio();
+
+    }
+
+    function rechazarPedido(index) {
+
+      pedidosActivos[index].estado = "Rechazado";
+
+      guardarPedidosActivos();
+
+      renderizarPedidosComercio();
+
+    }
+
     function moverRepartidor(posicion) {
 
       const rider = document.getElementById("rider-icon");
@@ -1510,9 +1648,15 @@
 
         total: totalPedido,
 
-        estado: "Entregado"
+        estado: "Pendiente"
 
       };
+
+      pedidosActivos.push(nuevoPedido);
+
+      guardarPedidosActivos();
+
+      renderizarPedidosComercio();
 
       document.getElementById("order-message").textContent = "Pedido confirmado ✅";
 
@@ -1544,11 +1688,29 @@
 
         moverRepartidor("fin");
 
-        historialPedidos.push(nuevoPedido);
+        const indexActivo = pedidosActivos.findIndex(p => p.id === nuevoPedido.id);
+
+        if (indexActivo !== -1) {
+
+          pedidosActivos[indexActivo].estado = "Entregado";
+
+        }
+
+        historialPedidos.push({
+
+          ...nuevoPedido,
+
+          estado: "Entregado"
+
+        });
 
         guardarHistorial();
 
+        guardarPedidosActivos();
+
         renderizarHistorial();
+
+        renderizarPedidosComercio();
 
         carrito = [];
 
@@ -1579,6 +1741,8 @@
     renderizarCarrito();
 
     renderizarHistorial();
+
+    renderizarPedidosComercio();
 
     moverRepartidor("inicio");
 
