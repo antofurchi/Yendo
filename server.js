@@ -10,15 +10,11 @@ app.use(cors());
 
 app.use(express.json());
 
-// ⚠️ PONÉ TU ACCESS TOKEN ACÁ
-
 mercadopago.configure({
 
-  access_token: "TU_ACCESS_TOKEN_ACA"
+  access_token: "APP_USR-5080712279828644-042316-1f317e34bbfd1ff20bed3952f0f7449a-3354994455"
 
 });
-
-// Crear pago
 
 app.post("/crear-pago", async (req, res) => {
 
@@ -64,4 +60,4 @@ app.listen(3000, () => {
 
   console.log("Servidor funcionando en puerto 3000");
 
-})
+});
