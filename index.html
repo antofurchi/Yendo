@@ -374,15 +374,51 @@
 
     .cart-summary h3 {
 
-      margin-bottom: 10px;
+      margin-bottom: 14px;
 
     }
 
-    .cart-summary p {
+    .cart-item {
 
-      margin-bottom: 8px;
+      display: flex;
 
-      color: #555;
+      justify-content: space-between;
+
+      align-items: center;
+
+      padding: 10px 0;
+
+      border-bottom: 1px solid #eee;
+
+      gap: 10px;
+
+    }
+
+    .cart-item:last-child {
+
+      border-bottom: none;
+
+    }
+
+    .remove-btn {
+
+      background: #ff5a5a;
+
+      color: white;
+
+      border: none;
+
+      border-radius: 8px;
+
+      padding: 8px 12px;
+
+      cursor: pointer;
+
+    }
+
+    .cart-empty {
+
+      color: #666;
 
     }
 
@@ -394,7 +430,7 @@
 
       color: #27c2a0;
 
-      margin-top: 10px;
+      margin-top: 14px;
 
     }
 
@@ -564,7 +600,7 @@
 
       <h3>Resumen del carrito</h3>
 
-      <p id="cart-items">Todavía no agregaste productos.</p>
+      <div id="cart-items" class="cart-empty">Todavía no agregaste productos.</div>
 
       <div class="cart-total">Total: $<span id="cart-total">0</span></div>
 
@@ -580,25 +616,75 @@
 
   <script>
 
-    let cantidad = 0;
-
-    let total = 0;
-
-    let productos = [];
+    let carrito = [];
 
     function agregarAlCarrito(nombre, precio) {
 
-      cantidad++;
+      carrito.push({ nombre, precio });
 
-      total += precio;
+      renderizarCarrito();
 
-      productos.push(nombre);
+    }
 
-      document.getElementById("cart-count").textContent = cantidad;
+    function eliminarDelCarrito(index) {
 
-      document.getElementById("cart-total").textContent = total;
+      carrito.splice(index, 1);
 
-      document.getElementById("cart-items").textContent = "Productos: " + productos.join(", ");
+      renderizarCarrito();
+
+    }
+
+    function renderizarCarrito() {
+
+      const cartCount = document.getElementById("cart-count");
+
+      const cartItems = document.getElementById("cart-items");
+
+      const cartTotal = document.getElementById("cart-total");
+
+      cartCount.textContent = carrito.length;
+
+      if (carrito.length === 0) {
+
+        cartItems.innerHTML = '<div class="cart-empty">Todavía no agregaste productos.</div>';
+
+        cartTotal.textContent = "0";
+
+        return;
+
+      }
+
+      let total = 0;
+
+      cartItems.innerHTML = "";
+
+      carrito.forEach((producto, index) => {
+
+        total += producto.precio;
+
+        const item = document.createElement("div");
+
+        item.className = "cart-item";
+
+        item.innerHTML = `
+
+          <div>
+
+            <strong>${producto.nombre}</strong><br>
+
+            $${producto.precio}
+
+          </div>
+
+          <button class="remove-btn" onclick="eliminarDelCarrito(${index})">Quitar</button>
+
+        `;
+
+        cartItems.appendChild(item);
+
+      });
+
+      cartTotal.textContent = total;
 
     }
 
