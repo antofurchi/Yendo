@@ -30,6 +30,8 @@
 
       color: #222;
 
+      padding-bottom: 80px;
+
     }
 
     header {
@@ -235,6 +237,26 @@
       color: white;
 
       border-color: #222;
+
+    }
+
+    .order-hero-btn {
+
+      margin-top: 10px;
+
+      padding: 12px 20px;
+
+      border: none;
+
+      border-radius: 12px;
+
+      background: #27c2a0;
+
+      color: white;
+
+      font-size: 16px;
+
+      cursor: pointer;
 
     }
 
@@ -528,6 +550,60 @@
 
     }
 
+    #order-btn {
+
+      margin-top: 14px;
+
+      width: 100%;
+
+    }
+
+    #order-message {
+
+      margin-top: 12px;
+
+      color: #27c2a0;
+
+      font-weight: bold;
+
+    }
+
+    .bottom-nav {
+
+      position: fixed;
+
+      bottom: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      background: white;
+
+      border-top: 1px solid #ddd;
+
+      display: flex;
+
+      justify-content: space-around;
+
+      padding: 10px 0;
+
+      z-index: 100;
+
+    }
+
+    .bottom-nav button {
+
+      background: none;
+
+      border: none;
+
+      font-size: 16px;
+
+      cursor: pointer;
+
+    }
+
     footer {
 
       text-align: center;
@@ -608,6 +684,8 @@
 
     </div>
 
+    <button class="order-hero-btn" onclick="hacerPedido()">Hacer pedido</button>
+
   </section>
 
   <div class="welcome" id="bienvenida"></div>
@@ -672,6 +750,10 @@
 
       <div class="cart-total">Total: $<span id="cart-total">0</span></div>
 
+      <button id="order-btn" class="add-btn" onclick="hacerPedido()">Hacer pedido</button>
+
+      <p id="order-message"></p>
+
     </div>
 
     <div class="box">
@@ -719,6 +801,16 @@
     Yendo · Delivery local en Sarandí Grande
 
   </footer>
+
+  <div class="bottom-nav">
+
+    <button onclick="scrollToTop()">🏠 Inicio</button>
+
+    <button onclick="mostrarCarrito()">🛒 Carrito</button>
+
+    <button onclick="mostrarLogin()">👤 Perfil</button>
+
+  </div>
 
   <script>
 
@@ -1018,6 +1110,62 @@
 
     }
 
+    function hacerPedido() {
+
+      if (carrito.length === 0) {
+
+        alert("Agregá productos antes de hacer el pedido");
+
+        return;
+
+      }
+
+      document.getElementById("order-message").textContent = "Pedido confirmado ✅";
+
+      document.getElementById("delivery-rider").textContent = "En camino";
+
+      document.getElementById("delivery-status").textContent = "Repartidor saliendo";
+
+      document.getElementById("delivery-time").textContent = "20 min";
+
+      setTimeout(() => {
+
+        document.getElementById("delivery-status").textContent = "Llegando";
+
+        document.getElementById("delivery-time").textContent = "10 min";
+
+      }, 4000);
+
+      setTimeout(() => {
+
+        document.getElementById("delivery-rider").textContent = "Entregado";
+
+        document.getElementById("delivery-status").textContent = "Pedido entregado";
+
+        document.getElementById("delivery-time").textContent = "0 min";
+
+        carrito = [];
+
+        guardarCarrito();
+
+        renderizarCarrito();
+
+      }, 8000);
+
+    }
+
+    function scrollToTop() {
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+    }
+
+    function mostrarCarrito() {
+
+      document.querySelector(".box").scrollIntoView({ behavior: "smooth" });
+
+    }
+
     actualizarUsuarioEnPantalla();
 
     renderizarProductos();
@@ -1025,69 +1173,6 @@
     renderizarCarrito();
 
   </script>
-  <div class="bottom-nav">
-
-  <button onclick="scrollToTop()">🏠 Inicio</button>
-
-  <button onclick="mostrarCarrito()">🛒 Carrito</button>
-
-  <button onclick="mostrarLogin()">👤 Perfil</button>
-
-</div>
-
-<style>
-
-.bottom-nav {
-
-  position: fixed;
-
-  bottom: 0;
-
-  left: 0;
-
-  width: 100%;
-
-  background: white;
-
-  border-top: 1px solid #ddd;
-
-  display: flex;
-
-  justify-content: space-around;
-
-  padding: 10px 0;
-
-  z-index: 100;
-
-}
-
-.bottom-nav button {
-
-  background: none;
-
-  border: none;
-
-  font-size: 16px;
-
-}
-
-</style>
-
-<script>
-
-function scrollToTop() {
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
-
-}
-
-function mostrarCarrito() {
-
-  document.querySelector(".box").scrollIntoView({ behavior: "smooth" });
-
-}
-
-</script>
 
 </body>
 
