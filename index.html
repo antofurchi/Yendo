@@ -118,6 +118,26 @@
 
     }
 
+    .btn-pay {
+
+      background: #2196f3;
+
+      color: white;
+
+      border: none;
+
+      border-radius: 10px;
+
+      padding: 10px 14px;
+
+      cursor: pointer;
+
+      width: 100%;
+
+      margin-top: 10px;
+
+    }
+
     .hero {
 
       text-align: center;
@@ -612,6 +632,16 @@
 
     }
 
+    #pay-message {
+
+      margin-top: 10px;
+
+      color: #2196f3;
+
+      font-weight: bold;
+
+    }
+
     .bottom-nav {
 
       position: fixed;
@@ -1028,6 +1058,10 @@
 
       <div class="cart-total">Total: $<span id="cart-total">0</span></div>
 
+      <button class="btn-pay" onclick="pagarPedido()">Pagar</button>
+
+      <p id="pay-message"></p>
+
       <button id="order-btn" class="add-btn" onclick="hacerPedido()">Hacer pedido</button>
 
       <p id="order-message"></p>
@@ -1192,6 +1226,8 @@
 
     let pedidosActivos = JSON.parse(localStorage.getItem("yendo_pedidos_activos")) || [];
 
+    let pedidoPagado = JSON.parse(localStorage.getItem("yendo_pagado")) || false;
+
     let productosBase = [
 
       { nombre: "Carnicería El Novillo", precio: 220, icono: "🥩", descripcion: "Carne fresca, milanesas, chorizos y más." },
@@ -1233,6 +1269,12 @@
     function guardarPedidosActivos() {
 
       localStorage.setItem("yendo_pedidos_activos", JSON.stringify(pedidosActivos));
+
+    }
+
+    function guardarPago() {
+
+      localStorage.setItem("yendo_pagado", JSON.stringify(pedidoPagado));
 
     }
 
@@ -1330,6 +1372,10 @@
 
       carrito.push({ nombre, precio });
 
+      pedidoPagado = false;
+
+      guardarPago();
+
       guardarCarrito();
 
       renderizarCarrito();
@@ -1413,6 +1459,24 @@
       });
 
       cartTotal.textContent = total;
+
+    }
+
+    function pagarPedido() {
+
+      if (carrito.length === 0) {
+
+        alert("Agregá productos antes de pagar");
+
+        return;
+
+      }
+
+      pedidoPagado = true;
+
+      guardarPago();
+
+      document.getElementById("pay-message").textContent = "Pago realizado con éxito 💳";
 
     }
 
@@ -1574,7 +1638,9 @@
 
             Total: $${pedido.total}<br>
 
-            Estado: <span class="status-ok">${pedido.estado || "Pendiente"}</span>
+            Estado: <span class="status-ok">${pedido.estado || "Pendiente"}</span><br>
+
+            Pago: <span class="status-ok">${pedido.pagado ? "Pagado" : "Pendiente"}</span>
 
           </div>
 
@@ -1758,6 +1824,14 @@
 
       }
 
+      if (!pedidoPagado) {
+
+        alert("Primero tenés que pagar el pedido");
+
+        return;
+
+      }
+
       const itemsPedido = carrito.map(item => item.nombre);
 
       const totalPedido = carrito.reduce((acc, item) => acc + item.precio, 0);
@@ -1770,7 +1844,9 @@
 
         total: totalPedido,
 
-        estado: "Pendiente"
+        estado: "Pendiente",
+
+        pagado: true
 
       };
 
@@ -1840,9 +1916,15 @@
 
         carrito = [];
 
+        pedidoPagado = false;
+
+        guardarPago();
+
         guardarCarrito();
 
         renderizarCarrito();
+
+        document.getElementById("pay-message").textContent = "";
 
       }, 8000);
 
@@ -1873,6 +1955,12 @@
     renderizarPedidosRepartidor();
 
     moverRepartidor("inicio");
+
+    if (pedidoPagado) {
+
+      document.getElementById("pay-message").textContent = "Pago realizado con éxito 💳";
+
+    }
 
   </script>
 
