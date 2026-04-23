@@ -50,6 +50,8 @@
 
       top: 0;
 
+      z-index: 10;
+
     }
 
     .logo {
@@ -67,6 +69,8 @@
       display: flex;
 
       gap: 10px;
+
+      align-items: center;
 
     }
 
@@ -314,6 +318,8 @@
 
       align-items: center;
 
+      gap: 10px;
+
     }
 
     .price {
@@ -339,6 +345,56 @@
       padding: 10px 14px;
 
       cursor: pointer;
+
+    }
+
+    .cart-box {
+
+      max-width: 1150px;
+
+      margin: 0 auto 30px;
+
+      padding: 0 20px 20px;
+
+    }
+
+    .cart-summary {
+
+      background: white;
+
+      border-radius: 18px;
+
+      padding: 18px;
+
+      box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+
+      border: 1px solid #eee;
+
+    }
+
+    .cart-summary h3 {
+
+      margin-bottom: 10px;
+
+    }
+
+    .cart-summary p {
+
+      margin-bottom: 8px;
+
+      color: #555;
+
+    }
+
+    .cart-total {
+
+      font-size: 22px;
+
+      font-weight: bold;
+
+      color: #27c2a0;
+
+      margin-top: 10px;
 
     }
 
@@ -368,7 +424,7 @@
 
       <button class="btn-light">Soy comercio</button>
 
-      <button class="btn-main">Carrito</button>
+      <button class="btn-main">Carrito (<span id="cart-count">0</span>)</button>
 
     </div>
 
@@ -422,9 +478,9 @@
 
           <div class="price-row">
 
-            <div class="price">Desde $220</div>
+            <div class="price">$220</div>
 
-            <button class="add-btn">Ver más</button>
+            <button class="add-btn" onclick="agregarAlCarrito('Carnicería El Novillo', 220)">Agregar</button>
 
           </div>
 
@@ -444,9 +500,9 @@
 
           <div class="price-row">
 
-            <div class="price">Desde $180</div>
+            <div class="price">$180</div>
 
-            <button class="add-btn">Ver más</button>
+            <button class="add-btn" onclick="agregarAlCarrito('Farmacia Central', 180)">Agregar</button>
 
           </div>
 
@@ -466,9 +522,9 @@
 
           <div class="price-row">
 
-            <div class="price">Desde $250</div>
+            <div class="price">$250</div>
 
-            <button class="add-btn">Ver más</button>
+            <button class="add-btn" onclick="agregarAlCarrito('Pollería Don Tito', 250)">Agregar</button>
 
           </div>
 
@@ -488,9 +544,9 @@
 
           <div class="price-row">
 
-            <div class="price">Desde $90</div>
+            <div class="price">$90</div>
 
-            <button class="add-btn">Ver más</button>
+            <button class="add-btn" onclick="agregarAlCarrito('Almacén La Esquina', 90)">Agregar</button>
 
           </div>
 
@@ -502,11 +558,51 @@
 
   </section>
 
+  <section class="cart-box">
+
+    <div class="cart-summary">
+
+      <h3>Resumen del carrito</h3>
+
+      <p id="cart-items">Todavía no agregaste productos.</p>
+
+      <div class="cart-total">Total: $<span id="cart-total">0</span></div>
+
+    </div>
+
+  </section>
+
   <footer>
 
     Yendo · Delivery local en Sarandí Grande
 
   </footer>
+
+  <script>
+
+    let cantidad = 0;
+
+    let total = 0;
+
+    let productos = [];
+
+    function agregarAlCarrito(nombre, precio) {
+
+      cantidad++;
+
+      total += precio;
+
+      productos.push(nombre);
+
+      document.getElementById("cart-count").textContent = cantidad;
+
+      document.getElementById("cart-total").textContent = total;
+
+      document.getElementById("cart-items").textContent = "Productos: " + productos.join(", ");
+
+    }
+
+  </script>
 
 </body>
 
